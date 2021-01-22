@@ -1,4 +1,7 @@
 import pygame
+from Emeny import Emeny
+from Gun import Gun
+from Player import Player
 
 pygame.init()
 
@@ -6,110 +9,82 @@ screen_size = (500, 500)
 window = pygame.display.set_mode(screen_size)
 
 pygame.display.set_caption("First Game")
-
-walk_right = [pygame.image.load('./img/R1.png'),
-              pygame.image.load('./img/R2.png'),
-              pygame.image.load('./img/R3.png'),
-              pygame.image.load('./img/R4.png'),
-              pygame.image.load('./img/R5.png'),
-              pygame.image.load('./img/R6.png'),
-              pygame.image.load('./img/R7.png'),
-              pygame.image.load('./img/R8.png'),
-              pygame.image.load('./img/R9.png'),]
-
-walk_left = [pygame.image.load('./img/L1.png'),
-             pygame.image.load('./img/L2.png'),
-             pygame.image.load('./img/L3.png'),
-             pygame.image.load('./img/L4.png'),
-             pygame.image.load('./img/L5.png'),
-             pygame.image.load('./img/L6.png'),
-             pygame.image.load('./img/L7.png'),
-             pygame.image.load('./img/L8.png'),
-             pygame.image.load('./img/L9.png'),]
-
 background = pygame.image.load('./img/bg.jpg')
-char = pygame.image.load('./img/standing.png')
-
 clock = pygame.time.Clock()
 
-x = 150
-y = 350
-width = 64
-height = 64
-vel = 5
-left = False
-right = False
-walk_count = 0
-
-
-is_jump = False
-jump_count = 10
 run = True
+bullets = []
 
 def redraw_game_window():
-    global walk_count
     window.blit(background, (0,0))
-    if walk_count + 1 >= 27:
-        walk_count = 0
-
-    if left:
-        window.blit(walk_left[walk_count//3], (x, y))
-        walk_count += 1
-
-    elif right:
-        window.blit(walk_right[walk_count//3], (x, y))
-        walk_count += 1
-
-    else:
-        window.blit(char, (x, y))
-
+    hero.draw(window)
+    goblin.draw(window)
+    for bullet in bullets:
+        bullet.draw(window)
     pygame.display.update()
+
+hero = Player(300, 410, 64, 64)
+goblin = Emeny(100, 410, 64, 64, 450)
 
 while run:
     clock.tick(27)
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
+    for bullet in bullets:
+        if bullet.x < 500 and bullet.x > 0:
+            bullet.x += bullet.vel
+        else:
+            bullets.pop(bullets.index(bullet))
+
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_LEFT] and x > vel:
-        left = True
-        right = False
-        x -= vel
-
-    elif keys[pygame.K_RIGHT] and x < screen_size[0] - width - vel:
-        left = False
-        right = True
-        x += vel
-
+    if keys[pygame.K_f]:
+        if len(bullets) < 5:
+            if hero.last_move == "right":
+                facing = 1
+            else:
+                facing = -1
+            bullets.append(Gun(round(hero.x+hero.width//2),
+                               round(hero.y+hero.height//2),
+                               3, (255, 0, 0), facing))
+    if keys[pygame.K_LEFT] and hero.x > hero.vel:
+        hero.left = True
+        hero.right = False
+        hero.x -= hero.vel
+        hero.last_move = "left"
+        hero.standing = False
+    elif keys[pygame.K_RIGHT] and hero.x < screen_size[0] - hero.width - hero.vel:
+        hero.left = False
+        hero.right = True
+        hero.x += hero.vel
+        hero.last_move = "right"
+        hero.standing = False
     else:
-        right = False
-        left = False
-        walk_count = 0
+        hero.standing = True
+        hero.walk_count = 0
 
-    if not is_jump:
+    if not hero.is_jump:
         if keys[pygame.K_SPACE]:
-            is_jump = True
-
+            hero.is_jump = True
     else:
-        right = False
-        left = False
-        walk_count = 0
+        hero.right = False
+        hero.left = False
+        hero.standing = True
+        hero.walk_count = 0
 
-        if jump_count >= -10:
+        if hero.jump_count >= -10:
             neg = 1
-            if jump_count < 0:
+            if hero.jump_count < 0:
                 neg = -1
-            y -= neg *(jump_count ** 2) * 0.5
-            jump_count -= 1
+            hero.y -= neg *(hero.jump_count ** 2) * 0.5
+            hero.jump_count -= 1
         else:
-            is_jump = False
-            jump_count = 10
+            hero.is_jump = False
+            hero.jump_count = 10
 
     redraw_game_window()
-
 
 pygame.quit()
 
