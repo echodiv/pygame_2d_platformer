@@ -14,7 +14,7 @@ class Player(object):
         self.right: bool = False
         self.is_jump: bool = False
         self.standing: bool = True
-        self.last_move:str = "right"
+        self.hitbox: set = (self.x + 17, self.y + 11, 29, 52)
         self.char = pygame.image.load('./img/standing.png')
         self.walk_right = [pygame.image.load('./img/R{}.png'.format(i)) \
                            for i in range(1, 10)]
@@ -38,3 +38,24 @@ class Player(object):
                 window.blit(self.walk_left[0], (self.x, self.y))
             else:
                 window.blit(self.char, (self.x, self.y))
+        self.hitbox = (self.x + 17, self.y + 11, 29, 52)
+        pygame.draw.rect(window, (255,0,0), self.hitbox, 2)
+
+    def hit(self, window):
+        self.is_jump = False
+        self.jump_count = 0
+        self.x = 60
+        self.y = 410
+        self.walk_count = 0
+        font = pygame.font.SysFont('comicsans', 100)
+        text = font.render('-5', 1, (255,0,0))
+        window.blit(text, (250 - (text.get_width()/2), 200))
+        pygame.display.update()
+        i = 0
+        while i < 300:
+            pygame.time.delay(10)
+            i += 1
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    i = 301
+                    pygame.quit()
