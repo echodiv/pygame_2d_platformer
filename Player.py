@@ -6,6 +6,7 @@ class Player(object):
         self.x: int = x
         self.y: int = y
         self.vel: int = 5
+        self.score: int = 0
         self.width: int = width
         self.height: int = height
         self.walk_count: int = 0
@@ -41,15 +42,13 @@ class Player(object):
         self.hitbox = (self.x + 17, self.y + 11, 29, 52)
         pygame.draw.rect(window, (255,0,0), self.hitbox, 2)
 
-    def hit(self, window):
+    def hit(self):
         self.is_jump = False
         self.jump_count = 0
         self.x = 60
         self.y = 410
         self.walk_count = 0
         font = pygame.font.SysFont('comicsans', 100)
-        text = font.render('-5', 1, (255,0,0))
-        window.blit(text, (250 - (text.get_width()/2), 200))
         pygame.display.update()
         i = 0
         while i < 300:

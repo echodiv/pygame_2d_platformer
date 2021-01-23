@@ -1,7 +1,7 @@
 import pygame
 
 
-class Emeny(object):
+class Enemy(object):
     def __init__(self, x, y, width, height, end):
         self.x = x
         self.y = y
