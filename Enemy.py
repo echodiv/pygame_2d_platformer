@@ -53,6 +53,6 @@ class Enemy(object):
     def hit(self):
         self.hit_sound.play()
         if self.health > 0:
-            self.health -= 1;
+            self.health -= 1
         else:
             self.visible = False
