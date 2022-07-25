@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
+
 @dataclass
-class config():
+class config:
     display_height = 720
     display_width = 1280
     bullets_in_display = 5

@@ -1,7 +1,7 @@
 import pygame
 
 
-class Gun():
+class Gun:
     def __init__(self, x: int, y: int, radius: int, color: set, facing: str) -> None:
         self.x = x
         self.y = y
@@ -9,7 +9,7 @@ class Gun():
         self.color = color
         self.facing = facing
         self.vel = 8 * facing
-        self.bullet_sound = pygame.mixer.Sound('./mic/shoot.wav')
+        self.bullet_sound = pygame.mixer.Sound("./mic/shoot.wav")
         self.bullet_sound.play()
 
     def draw(self, window):

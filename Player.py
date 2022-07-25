@@ -1,5 +1,7 @@
 import pygame
+
 from config import config
+
 
 class Player(object):
     def __init__(self, x: int, y: int, width: int, height: int) -> None:
@@ -19,11 +21,13 @@ class Player(object):
         self.is_jump = False
         self.standing = True
         self.hitbox = (self.x, self.y, 29, 52)
-        self.char = pygame.image.load('./img/standing.png')
-        self.walk_right = [pygame.image.load('./img/R{}.png'.format(i)) \
-                           for i in range(1, 10)]
-        self.walk_left = [pygame.image.load('./img/L{}.png'.format(i)) \
-                          for i in range(1, 10)]
+        self.char = pygame.image.load("./img/standing.png")
+        self.walk_right = [
+            pygame.image.load("./img/R{}.png".format(i)) for i in range(1, 10)
+        ]
+        self.walk_left = [
+            pygame.image.load("./img/L{}.png".format(i)) for i in range(1, 10)
+        ]
 
     def move_left(self) -> None:
         self.left = True
@@ -52,12 +56,14 @@ class Player(object):
             self.walk_count = 0
         if not self.standing:
             if self.left:
-                window.blit(self.walk_left[self.walk_count // 3],
-                            (self.img_x, self.img_y))
+                window.blit(
+                    self.walk_left[self.walk_count // 3], (self.img_x, self.img_y)
+                )
                 self.walk_count += 1
             elif self.right:
-                window.blit(self.walk_right[self.walk_count // 3],
-                            (self.img_x, self.img_y))
+                window.blit(
+                    self.walk_right[self.walk_count // 3], (self.img_x, self.img_y)
+                )
                 self.walk_count += 1
         else:
             if self.right:
@@ -67,7 +73,7 @@ class Player(object):
             else:
                 window.blit(self.char, (self.img_x, self.img_y))
         self.hitbox = (self.x, self.y, 29, 52)
-        pygame.draw.rect(window, (255,0,0), self.hitbox, 2)
+        pygame.draw.rect(window, (255, 0, 0), self.hitbox, 2)
 
     def hit(self):
         self.is_jump = False
@@ -75,7 +81,7 @@ class Player(object):
         self.x = 60
         self.y = 630
         self.walk_count = 0
-        font = pygame.font.SysFont('comicsans', 100)
+        font = pygame.font.SysFont("comicsans", 100)
         pygame.display.update()
         i = 0
         while i < 300:

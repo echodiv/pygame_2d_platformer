@@ -1,11 +1,12 @@
 import pygame
-from config import config
-from Collision import Collision
-from Enemy import Enemy
+
 from app.Ground import Earth
+from Collision import Collision
+from config import config
+from Enemy import Enemy
 from Gun import Gun
-from Player import Player
 from Map import Map
+from Player import Player
 
 pygame.init()
 
@@ -64,7 +65,7 @@ while run:
 
     for enemy in map.emenies:
         if Collision.enemy_attack(enemy, map.hero):
-            text = map.font.render('-5', 1, (255, 0, 0))
+            text = map.font.render("-5", 1, (255, 0, 0))
             window.blit(text, (250 - (text.get_width() / 2), 200))
             map.hero.score -= 5
             map.hero.hit()
@@ -77,14 +78,23 @@ while run:
         else:
             facing = 1
         if len(map.bullets) < 5:
-            map.add_bullet(Gun(round(map.hero.x+map.hero.width//2),
-                               round(map.hero.y+map.hero.height//2),
-                               3, (255, 0, 0), facing))
+            map.add_bullet(
+                Gun(
+                    round(map.hero.x + map.hero.width // 2),
+                    round(map.hero.y + map.hero.height // 2),
+                    3,
+                    (255, 0, 0),
+                    facing,
+                )
+            )
         shoot_loop = 1
 
     if keys[pygame.K_LEFT] and map.hero.x > map.hero.vel:
         map.hero.move_left()
-    elif keys[pygame.K_RIGHT] and map.hero.x < screen_size[0] - map.hero.width - map.hero.vel:
+    elif (
+        keys[pygame.K_RIGHT]
+        and map.hero.x < screen_size[0] - map.hero.width - map.hero.vel
+    ):
         map.hero.move_right()
     else:
         map.hero.standing = True
@@ -99,7 +109,7 @@ while run:
     else:
         if map.hero.jump_count >= 0:
             neg = 1
-            map.hero.y -= neg *(map.hero.jump_count ** 2) * 0.5
+            map.hero.y -= neg * (map.hero.jump_count**2) * 0.5
             map.hero.jump_count -= 1
         else:
             map.hero.is_jump = False
@@ -108,4 +118,3 @@ while run:
     map.draw(window)
 
 pygame.quit()
-

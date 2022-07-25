@@ -1,13 +1,16 @@
 import pygame
-from GameExceptions import EnemyNotFoundError, BulletNotFoundError, BlockNotFoundError
+
 from config import config
+from GameExceptions import (BlockNotFoundError, BulletNotFoundError,
+                            EnemyNotFoundError)
+
 
 class Map(object):
     def __init__(self, x: int, y: int):
-        self.background = pygame.image.load('./img/bg.jpg')
-        self.font = pygame.font.SysFont('comicsans', 30, True)
-        self.x : int = x
-        self.y : int = y
+        self.background = pygame.image.load("./img/bg.jpg")
+        self.font = pygame.font.SysFont("comicsans", 30, True)
+        self.x: int = x
+        self.y: int = y
         self.hero = None
         self.bullets = []
         self.blocks = []
@@ -15,7 +18,7 @@ class Map(object):
 
     def load(self):
         pygame.display.set_caption("Main Game")
-        music = pygame.mixer.music.load('./mic/main.mp3')
+        music = pygame.mixer.music.load("./mic/main.mp3")
         pygame.mixer.music.play(-1)
 
     def add_hero(self, hero):
@@ -55,14 +58,20 @@ class Map(object):
             self.x += self.hero.x - config.map_move_x_border_right
             self.hero.x = config.map_move_x_border_right
 
-        if self.x > 0 and  self.hero.x < config.map_move_x_border_left:
+        if self.x > 0 and self.hero.x < config.map_move_x_border_left:
             self.x += self.hero.x - config.map_move_x_border_left
             self.hero.x = config.map_move_x_border_left
 
-        text = self.font.render('x: {}, y: {}, dx: {}, dy: {}'.format(self.hero.x, self.hero.y, self.x, self.y), 1, (0, 0, 0))
+        text = self.font.render(
+            "x: {}, y: {}, dx: {}, dy: {}".format(
+                self.hero.x, self.hero.y, self.x, self.y
+            ),
+            1,
+            (0, 0, 0),
+        )
         window.blit(text, (0, 50))
 
-        text = self.font.render('Score: {}'.format(self.hero.score), 1, (0, 0, 0))
+        text = self.font.render("Score: {}".format(self.hero.score), 1, (0, 0, 0))
         window.blit(text, (1150, 10))
 
         if self.emenies:
@@ -78,4 +87,3 @@ class Map(object):
         if self.hero:
             self.hero.draw(window)
         pygame.display.update()
-
